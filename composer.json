@@ -1,0 +1,21 @@
+{
+    "name": "themusicdev/cakephp-trailing-slash",
+    "description": "301-redirects trailing-slash URLs to the slash-free canonical form for TheMusicDev CakePHP sites",
+    "type": "cakephp-plugin",
+    "version": "1.0.0",
+    "license": "MIT",
+    "require": {
+        "php": ">=8.2",
+        "cakephp/cakephp": "^5.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "TheMusicDev\\TrailingSlash\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "TheMusicDev\\TrailingSlash\\Test\\": "tests/"
+        }
+    }
+}
