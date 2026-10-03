@@ -16,7 +16,7 @@ are pages and which are files or assets. Rationale and decisions:
 ## Install
 
 ```bash
-composer require themusicdev/cakephp-trailing-slash
+composer require themusicdev/trailing-slash
 bin/cake plugin load TheMusicDev/TrailingSlash
 ```
 
