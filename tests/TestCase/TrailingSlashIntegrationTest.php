@@ -5,6 +5,7 @@ namespace TheMusicDev\TrailingSlash\Test\TestCase;
 
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
+use TestApp\Application;
 
 /**
  * The middleware as a host installs it: in the application's queue, answering
@@ -13,6 +14,12 @@ use Cake\TestSuite\TestCase;
 final class TrailingSlashIntegrationTest extends TestCase
 {
     use IntegrationTestTrait;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->configApplication(Application::class, [CONFIG]);
+    }
 
     public function testASlashURLIsRedirectedBeforeRouting(): void
     {
@@ -24,7 +31,7 @@ final class TrailingSlashIntegrationTest extends TestCase
 
     public function testASlashFreeURLIsServedNormally(): void
     {
-        $this->get('/health');
+        $this->get('/ping');
 
         $this->assertResponseOk();
     }
