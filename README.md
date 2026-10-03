@@ -10,21 +10,31 @@ return 200 and the page is reachable at two URLs — each naming itself canonica
 That is duplicate content, and it is how a trailing slash creeps into
 sitemaps and links. Pick one form and redirect the other. We pick **no slash**:
 stripping is a pure string rule; adding a slash would need to know which URLs
-are pages and which are files or assets. Rationale + decisions:
+are pages and which are files or assets. Rationale and decisions:
 [`docs/decisions.md`](docs/decisions.md).
 
 ## Install
 
-1. composer path repo + `require themusicdev/cakephp-trailing-slash ^1.0`
-2. `config/plugins.php`: `'TheMusicDev/TrailingSlash' => []`
-3. In `Application::middleware()`, **after the asset middleware, before routing**:
-
-```php
-->add(TrailingSlashMiddleware::fromConfig())
+```bash
+composer require themusicdev/cakephp-trailing-slash
+bin/cake plugin load TheMusicDev/TrailingSlash
 ```
 
-(After assets so files are never redirected; before routing so even a URL no route
-matches is redirected instead of 404ed.)
+Then add the middleware in `Application::middleware()`, **after the asset middleware and before routing**:
+
+```php
+use TheMusicDev\TrailingSlash\Middleware\TrailingSlashMiddleware;
+
+$middlewareQueue
+    ->add(new AssetMiddleware([...]))
+    ->add(TrailingSlashMiddleware::fromConfig())
+    ->add(new RoutingMiddleware($this));
+```
+
+(After assets so files are never redirected; before routing so even a URL no route matches is redirected
+instead of 404ed.)
+
+Requires PHP 8.2+ and CakePHP 5.2+.
 
 ## Configure (host `config/app.php`, optional)
 
@@ -37,14 +47,14 @@ matches is redirected instead of 404ed.)
 
 Host values win over `config/app_default.php`. `skip` is for a URL the app
 redirects itself or must serve in both forms, so the visitor gets one hop instead of
-two. (This site uses none.)
+two. Most sites need none.
 
 ## Use
 
 Nothing to call. Build every URL from the router (`$this->Url->build([...])`,
 `Router::url([...])`) — routes are defined without a trailing slash, so routed URLs
 already come out slash-free; a hand-typed `href="/x/"` is what this plugin exists to
-clean up after, and the host's convention is to never write one.
+clean up after, and TheMusicDev's convention is never to write one.
 
 ## Gotchas
 
@@ -62,5 +72,14 @@ clean up after, and the host's convention is to never write one.
 
 ## Tests
 
-`vendor/bin/phpunit --testsuite trailing-slash` (plugin tests live in `tests/`; they
-use the host app only for the integration test).
+```bash
+composer install
+composer check        # phpunit + phpcs (CakePHP standard) + phpstan (level 8)
+```
+
+The tests run against a tiny test application in `tests/test_app` that loads the plugin the way a host does.
+There is no database.
+
+## License
+
+MIT, see [LICENSE](LICENSE).
