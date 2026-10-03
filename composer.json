@@ -1,5 +1,5 @@
 {
-    "name": "themusicdev/cakephp-trailing-slash",
+    "name": "themusicdev/trailing-slash",
     "description": "CakePHP 5 plugin: one middleware that 301-redirects trailing-slash URLs to the slash-free canonical form",
     "type": "cakephp-plugin",
     "keywords": ["cakephp", "plugin", "middleware", "seo", "redirect", "trailing-slash", "canonical-url"],
